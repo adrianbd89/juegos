@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Para ti ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/contador.js" defer></script>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">Para ti ❤️</div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="app.html">App</a>
+            <a href="app.html#juego">Juego</a>
+        </nav>
+    </header>
+
+    <main class="card">
+        <h1>Cuenta atrás 💖</h1>
+
+        <div id="contador" class="contador"></div>
+        <div id="accion"></div>
+    </main>
+
+    <script>
+        let codigo = "";
+        const clave = "1234";
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key.match(/[0-9]/)) {
+                codigo += e.key;
+                if (codigo.length > 4) codigo = codigo.slice(-4);
+
+                if (codigo === clave) {
+                    window.location.href = "app.html";
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

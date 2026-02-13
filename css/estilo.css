@@ -1,0 +1,222 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fondo general */
+body {
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #ff9a9e,
+        #fad0c4,
+        #fad0c4
+    );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tarjeta central */
+.card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+
+    padding: 3rem 2.5rem;
+    max-width: 420px;
+    width: 90%;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.15);
+
+    animation: aparecer 1.2s ease-out;
+}
+
+/* Título */
+.card h1 {
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: #8b1d4a;
+    margin-bottom: 1rem;
+}
+
+
+.corazon {
+    display: inline-block;
+    animation: latido 1.3s infinite; /* usa la animación latido */
+    transform-origin: center; /* para que crezca desde el centro */
+}
+
+
+/* CONTADOR DEL INDEX */
+.contador {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    
+}
+
+.tiempo {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 16px;
+    padding: 0.8rem 1rem;
+    min-width: 70px;
+
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.tiempo span {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #8b1d4a;
+}
+
+.tiempo small {
+    font-size: 0.75rem;
+    color: #5a2a3a;
+}
+/* CONTADOR DEL INDEX FINAL */
+
+
+/* BOTON ACCESO DEL INDEX */
+.bloqueado {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+
+    border-radius: 999px;
+    border: 2px dashed rgba(139, 29, 74, 0.4);
+
+    color: #8b1d4a;
+    font-weight: 500;
+    font-size: 1.05rem;
+
+    opacity: 0.7;
+    cursor: not-allowed;
+
+    /*animation: flotar 2.5s ease-in-out infinite;*/
+}
+
+.bloqueado span {
+    display: block;
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
+    color: #5a2a3a;
+}
+
+/* Desbloqueado */
+.desbloqueado {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+
+    background: linear-gradient(135deg, #ff5f9e, #ff85b3);
+    color: white;
+
+    border-radius: 999px;
+    font-size: 1.2rem;
+    font-weight: 600;
+
+    box-shadow: 0 12px 24px rgba(255, 95, 158, 0.5);
+
+    animation: aparecer 0.8s ease-out;
+}
+/* BOTON ACCESO DEL INDEX FINAL */
+
+
+/* ANIMACIONES*/
+/* Animación de entrada */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Animación suave tipo latido */
+@keyframes latido {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.04);
+    }
+}
+
+/* Animación suave */
+@keyframes flotar {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+/* ANIMACIONES FINAL */
+
+/* NAVBAR */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.navbar .logo {
+    font-weight: 600;
+    color: #8b1d4a;
+}
+
+.navbar nav a {
+    margin-left: 1.5rem;
+    text-decoration: none;
+    color: #8b1d4a;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.navbar nav a:hover {
+    opacity: 0.7;
+}
+
+/* Separar contenido por navbar */
+body {
+    padding-top: 90px;
+}
+
+.entrar-btn {
+    margin-top: 1.5rem;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 999px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: white;
+    color: #ff5f9e;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.entrar-btn:hover {
+    transform: scale(1.05);
+}

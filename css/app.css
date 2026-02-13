@@ -1,0 +1,178 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    min-height: 100vh;
+}
+
+/* NAVBAR */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 3rem;
+
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(10px);
+
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* LOGO */
+.logo {
+    font-size: 1.5rem;
+}
+
+/* NAV LINKS */
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #8b1d4a;
+    font-weight: 500;
+    font-size: 1rem;
+    position: relative;
+    transition: 0.3s;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0%;
+    height: 2px;
+    background: #ff5f9e;
+    transition: 0.3s;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a:hover {
+    color: #ff5f9e;
+}
+
+/* CONTENIDO */
+#contenido {
+    margin-top: 120px;
+    text-align: center;
+    padding: 2rem;
+}
+
+/* PUZZLE */
+#tablero {
+    display: grid;
+    grid-template-columns: repeat(4, 80px);
+    grid-template-rows: repeat(4, 80px);
+    gap: 3px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.pieza {
+    width: 80px;
+    height: 80px;
+    background-size: 320px 320px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.15s ease;
+}
+
+.pieza:hover {
+    transform: scale(1.03);
+}
+
+.vacia {
+    background: transparent;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #8b1d4a;
+    font-weight: 500;
+    font-size: 1rem;
+    position: relative;
+    transition: 0.3s;
+}
+
+/* WORDLE */
+.wordle-tablero {
+    display: grid;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.wordle-fila {
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.wordle-casilla {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #8b1d4a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    background: #fff;
+    transition: 0.2s;
+}
+
+.wordle-teclado {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.teclado-fila {
+    display: flex;
+    gap: 5px;
+}
+
+.tecla {
+    padding: 10px 14px;
+    border-radius: 5px;
+    background-color: #d3d6da;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    min-width: 35px;
+}
+
+.tecla:hover {
+    background-color: #a8a8a8;
+}
