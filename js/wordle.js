@@ -15,7 +15,7 @@ class Wordle {
         ];
 
         this.seleccionarPalabra(); //selecciona la palabra y marca las columnas del tablero
-        this.filas = Math.max(6, this.columnas + 1); //por si la palabra es muy corta
+        this.filas = Math.min(6, this.columnas + 1); //por si la palabra es muy corta
 
         this.iniciar(); // Inserta HTML y crea tablero, registra listener
         this.inicializar(); // Reinicia variables y tablero
@@ -203,4 +203,5 @@ class Wordle {
             this.iniciar();
         }
     }
+
 }
