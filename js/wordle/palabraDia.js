@@ -3,7 +3,7 @@ class PalabraDia {
     static palabras = [
         "AMOR", "GUAPA", "PANCHO", "ROMANO", "MONTE", "STALIN",
         "DIOSA", "LUCES", "ARGENTO", "DULCE", "FELIZ", "DURU",
-        "UNIONES", "NIGGER", "ALMA", "CIELO", "SUEÑO", "BUTWHY",
+        "UNIONES", "NIGGER", "ALMA", "CIELO", "SUEÑO", "PERDON",
         "RAYOS", "HOLOCUENTO", "PROBETA", "JUDIO", "VUELA", "NEGRO",
         "MIMOS", "JULIA", "QUIMICA", "JUDIADA", "BOMBA", "CIELO"
     ];
