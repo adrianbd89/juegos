@@ -20,7 +20,7 @@ class CuentaAtras {
             // Mensaje especial
             this.elemento.innerHTML = `
                 <div class="desbloqueado">
-                    💖 ¡Hoy es el día! 💖
+                    💖 ¡Te Quiero! 💖
                 </div>
             `;
 

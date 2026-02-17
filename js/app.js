@@ -22,10 +22,10 @@ const app = {
     },
 
     mostrarWordle() {
-        if (!this.wordle) {
-            this.wordle = new Wordle("contenido"); // Solo se crea la primera vez la instancia
+        if (!this.mainWordle) {
+            this.mainWordle = new MainWordle("contenido"); // Solo se crea la primera vez la instancia
         } else {
-            this.wordle.clear(); // Si ya existía, reiniciamos el juego
+            this.mainWordle.clear(); // Si ya existía, reiniciamos el juego
         }
     }
 
