@@ -4,7 +4,7 @@ class PalabraDia {
         "AMOR", "GUAPA", "PANCHO", "ROMANO", "MONTE", "STALIN",
         "DIOSA", "LUCES", "ARGENTO", "DULCE", "FELIZ", "DURU",
         "UNIONES", "NIGGER", "ALMA", "CIELO", "SUEÑO", "PERDON",
-        "RAYOS", "HOLOCUENTO", "PROBETA", "JUDIO", "VUELA", "NEGRO",
+        "RAYOS", "HOLOCUENTO", "PROBETA", "JUDIO", "JUDIO", "NEGRO",
         "MIMOS", "JULIA", "QUIMICA", "JUDIADA", "BOMBA", "CIELO"
     ];
 
@@ -24,3 +24,4 @@ class PalabraDia {
         return this.palabraSecreta;
     }
 }
+
