@@ -61,13 +61,13 @@ class Teclado{
             this.estadoTeclas[letra] = nuevoEstado;
 
             if (nuevoEstado === "verde") {
-                tecla.style.backgroundColor = "#6aaa64";
+                tecla.style.background = "#6aaa64";
                 tecla.style.color = "#fff";
             } else if (nuevoEstado === "naranja") {
-                tecla.style.backgroundColor = "#c9b458";
+                tecla.style.background = "#c9b458";
                 tecla.style.color = "#fff";
             } else {
-                tecla.style.backgroundColor = "#787c7e";
+                tecla.style.background = "#787c7e";
                 tecla.style.color = "#fff";
             }
         }
@@ -77,7 +77,7 @@ class Teclado{
         this.estadoTeclas = {}; 
 
         document.querySelectorAll(".tecla").forEach(tecla => {
-            tecla.style.backgroundColor = "#d3d6da";
+            tecla.style.background = "#d3d6da";
             tecla.style.color = "#000";
         });
     }

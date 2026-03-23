@@ -1,50 +1,55 @@
-/* La aplicación puede dar el problema de qeu al dar al intro se ejecute el ultimo sitio que se clicó
-como puede ser el enlace y por eso puede tener comportamientos raros hay que tener cuidado con eso */
-
+/* La aplicacion puede dar el problema de que al dar al intro se ejecute
+el ultimo sitio que se clico, como puede ser el enlace, y por eso puede
+tener comportamientos raros. Hay que tener cuidado con eso. */
 
 class MainWordle {
-    
+
     constructor(contenedorId) {
         this.contenedor = document.getElementById(contenedorId);
-
-        // Crear HTML si no existe
-        this.generarHTMLbase();
-
-        this.controller = new TecladoController(this.contenedor);
-
-        
-        this.cer();
+        this.controller = null;
     }
-
-    async cer(){
-        Diccionario.comprobarPalabra();
-    }
-
 
     generarHTMLbase() {
-        if (!document.getElementById("wordle-tablero")) {
-            this.contenedor.innerHTML = `
-                <h2>Wordle 💌</h2>
+        this.contenedor.innerHTML = `
+            <h2>Wordle</h2>
+            <p class="subtexto-juego">Adivina la palabra del dia antes de quedarte sin intentos.</p>
+            <div class="juego-superficie wordle-superficie">
                 <div id="wordle-tablero" class="wordle-tablero"></div>
-                <p id="mensaje-wordle"></p>
-            `;
+            </div>
+            <p id="mensaje-wordle" class="mensaje-juego"></p>
+        `;
+    }
+
+    mostrarEstado(mensaje) {
+        const mensajeWordle = document.getElementById("mensaje-wordle");
+        if (mensajeWordle) {
+            mensajeWordle.textContent = mensaje;
         }
     }
 
-    reiniciar() {
-        this.controller.reset();
-
-        // Limpiar mensaje
-        const mensaje = document.getElementById("mensaje-wordle");
-        mensaje.textContent = '';
+    inicializar() {
+        this.generarHTMLbase();
+        const palabra = PalabraDia.getPalabraDelDia();
+        this.controller = new TecladoController(this.contenedor, palabra);
+        this.mostrarEstado("");
     }
-    
+
+    reiniciar() {
+        if (!this.controller) return;
+
+        this.controller.reset();
+        this.mostrarEstado("");
+    }
+
     clear() {
-        this.reiniciar();
-        //Comprobar si estamos en otra página y tenemos que generar otra vez todo o solo hacía falta limpiar
         const h2 = document.getElementById("contenido").querySelector("h2");
-        if (h2 && !h2.textContent.includes("Wordle")) {//Comprueba además si hay h2 para evitar errores
-            this.generarHTMLbase();
+        const estamosFueraDeWordle = !h2 || !h2.textContent.includes("Wordle");
+
+        if (estamosFueraDeWordle || !this.controller) {
+            PalabraDia.reiniciarPalabra();
+            this.inicializar();
+        } else {
+            this.reiniciar();
         }
     }
 }

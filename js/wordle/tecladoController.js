@@ -1,32 +1,41 @@
-class TecladoController{
+class TecladoController {
 
-    constructor(contenedor){
+    constructor(contenedor, palabraSecreta) {
+        this.contenedor = contenedor;
+        this.palabraSecreta = palabraSecreta;
+
+        this.columnas = this.palabraSecreta.length;
+        this.filas = Math.min(6, this.columnas + 1);
+
+        this.inicializarJuego();
+        this.registrarListeners();
+    }
+
+    inicializarJuego() {
         this.intentoActual = 0;
         this.letraActual = 0;
 
-        this.palabraSecreta = PalabraDia.getPalabraDelDia(); //selecciona la palabra del dia
-
-        this.columnas = this.palabraSecreta.length;
-        this.filas = Math.min(6, this.columnas + 1); //por si la palabra es muy corta
-
-        // Crear tablero visual
         this.tablero = new Tablero(this.filas, this.columnas);
-        this.teclado = new Teclado(contenedor);
-
-        this.registrarListeners(contenedor);
+        this.teclado = new Teclado(this.contenedor);
     }
 
-    registrarListeners(contenedor) {
+    registrarListeners() {
         if (!this.listenerRegistrado) {
             document.addEventListener("keydown", (e) => this.teclear(e));
             this.listenerRegistrado = true;
         }
 
-        // Registrar listener de teclado visual solo una vez
         if (!this.listenerTeclasVisualesRegistrado) {
-            contenedor.addEventListener("teclaPresionada", e => this.teclear({ key: e.detail }));
+            this.contenedor.addEventListener("teclaPresionada", (e) => this.teclear({ key: e.detail }));
             this.listenerTeclasVisualesRegistrado = true;
         }
+    }
+
+    vistaRenderizada() {
+        return Boolean(
+            document.getElementById("wordle-tablero") &&
+            document.getElementById("wordle-teclado")
+        );
     }
 
     teclear(e) {
@@ -36,7 +45,7 @@ class TecladoController{
         if (key === "BACKSPACE") {
             if (this.letraActual > 0) {
                 this.letraActual--;
-                this.tablero.updateTableroLogico(this.intentoActual, this.letraActual, '');
+                this.tablero.updateTableroLogico(this.intentoActual, this.letraActual, "");
                 this.tablero.actualizarFila(this.intentoActual, this.columnas);
             }
         } else if (key === "ENTER") {
@@ -54,15 +63,14 @@ class TecladoController{
 
     validarIntento() {
         const fila = document.querySelectorAll(".wordle-fila")[this.intentoActual].children;
-        const intento = this.tablero.getFilaTableroLogico(this.intentoActual).join('');
-        const palabra = this.palabraSecreta.split('');
-        const estado = Array(this.columnas).fill('gris');
-        // marca casillas Verde primero
+        const intento = this.tablero.getFilaTableroLogico(this.intentoActual).join("");
+        const palabra = this.palabraSecreta.split("");
+        const estado = Array(this.columnas).fill("gris");
+
         this.pintar(intento, palabra, estado, fila);
 
         if (intento === this.palabraSecreta) {
-            document.getElementById("mensaje-wordle").textContent = "💖 ¡Lo adivinaste! 💖";
-            this.intentoActual = this.filas;
+            this.victoria();
             return;
         }
 
@@ -70,51 +78,62 @@ class TecladoController{
         this.letraActual = 0;
 
         if (this.intentoActual === this.filas) {
-            document.getElementById("mensaje-wordle").textContent = `😢 La palabra era: ${this.palabraSecreta}`;
+            document.getElementById("mensaje-wordle").textContent = `La palabra era: ${this.palabraSecreta}`;
         }
     }
 
     pintar(intento, palabra, estado, fila) {
         for (let i = 0; i < this.columnas; i++) {
             if (intento[i] === palabra[i]) {
-                estado[i] = 'verde';
+                estado[i] = "verde";
                 palabra[i] = null;
             }
         }
 
-        // ,marca casillas Naranja luego
         for (let i = 0; i < this.columnas; i++) {
-            if (estado[i] === 'gris' && palabra.includes(intento[i])) {
-                estado[i] = 'naranja';
+            if (estado[i] === "gris" && palabra.includes(intento[i])) {
+                estado[i] = "naranja";
                 palabra[palabra.indexOf(intento[i])] = null;
             }
         }
 
-        // Pintar
-        // Pintar tablero + actualizar teclado
         for (let i = 0; i < this.columnas; i++) {
-
-            if (estado[i] === 'verde') {
-                fila[i].style.background = '#6aaa64';
+            if (estado[i] === "verde") {
+                fila[i].style.background = "#6aaa64";
                 this.teclado.actualizarTecla(intento[i], "verde");
-
-            } else if (estado[i] === 'naranja') {
-                fila[i].style.background = '#c9b458';
+            } else if (estado[i] === "naranja") {
+                fila[i].style.background = "#c9b458";
                 this.teclado.actualizarTecla(intento[i], "naranja");
-
             } else {
-                fila[i].style.background = '#787c7e';
+                fila[i].style.background = "#787c7e";
                 this.teclado.actualizarTecla(intento[i], "gris");
             }
         }
     }
 
-    reset(){
+    victoria() {
+        document.getElementById("mensaje-wordle").textContent = "Lo adivinaste 💖";
+
+        if (window.app) {
+            window.app.reproducirVictoria("#wordle-tablero", {
+                colors: ["#6aaa64", "#c9b458", "#ff8fab", "#ffffff"],
+                duration: 2000
+            });
+        }
+
+        this.intentoActual = this.filas;
+    }
+
+    reset() {
+        if (!this.vistaRenderizada()) {
+            this.inicializarJuego();
+            return;
+        }
+
         this.intentoActual = 0;
         this.letraActual = 0;
 
-        // Limpiar tablero y teclado visual
         this.tablero.limpiarTablero();
-        this.teclado.limpiarTeclado(); 
+        this.teclado.limpiarTeclado();
     }
 }

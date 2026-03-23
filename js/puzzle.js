@@ -2,10 +2,12 @@ class Puzzle {
     constructor(contenedorId, imagenes) {
         this.contenedor = document.getElementById(contenedorId);
         this.imagenes = imagenes;
+        this.resuelto = false;
         this.iniciar();
     }
 
     iniciar() {
+        this.resuelto = false;
         this.imagenActual = this.imagenes[Math.floor(Math.random() * this.imagenes.length)];
         this.tablero = [...Array(15).keys()];
         this.tablero.push(null);
@@ -13,8 +15,12 @@ class Puzzle {
         this.vaciaIndex = this.tablero.indexOf(null);
 
         this.contenedor.innerHTML = `
-            <h2>Ordena la imagen 🧩</h2>
-            <div id="tablero"></div>
+            <h2>Ordena la imagen</h2>
+            <p class="subtexto-juego">Mueve las piezas hasta recomponer la foto completa.</p>
+            <div class="juego-superficie puzzle-superficie">
+                <div id="tablero"></div>
+            </div>
+            <p id="mensaje-puzzle" class="mensaje-juego"></p>
         `;
         this.dibujar();
     }
@@ -42,6 +48,8 @@ class Puzzle {
     }
 
     mover(index) {
+        if (this.resuelto) return;
+
         const filaVacia = Math.floor(this.vaciaIndex / 4);
         const colVacia = this.vaciaIndex % 4;
         const filaClick = Math.floor(index / 4);
@@ -64,8 +72,19 @@ class Puzzle {
         for (let i = 0; i < 15; i++) {
             if (this.tablero[i] !== i) return;
         }
-        this.contenedor.innerHTML += `
-            <h3 style="margin-top:20px;">💖 ¡Lo has conseguido! 💖</h3>
-        `;
+
+        this.resuelto = true;
+
+        const mensaje = document.getElementById("mensaje-puzzle");
+        if (mensaje) {
+            mensaje.textContent = "Lo has conseguido";
+        }
+
+        if (window.app) {
+            window.app.reproducirVictoria("#tablero", {
+                colors: ["#ff5f9e", "#ff8fab", "#ffd166", "#fff4f7"],
+                duration: 2200
+            });
+        }
     }
 }
