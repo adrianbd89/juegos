@@ -15,6 +15,8 @@
     --gray: #787c7e;
     --key: #f3dfe4;
     --key-hover: #ebc6d1;
+    --puzzle-piece-size: 84px;
+    --puzzle-gap: 8px;
 }
 
 * {
@@ -29,6 +31,7 @@ html {
 
 body {
     min-height: 100vh;
+    min-height: 100dvh;
     padding: 110px 18px 32px;
     font-family: 'Poppins', sans-serif;
     color: var(--ink);
@@ -88,6 +91,7 @@ body::after {
     border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 24px;
     backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     box-shadow: var(--shadow-soft);
 }
 
@@ -131,6 +135,7 @@ body::after {
 #contenido {
     width: min(920px, 100%);
     margin: 0 auto;
+    min-height: calc(100dvh - 160px);
     padding: 34px 28px 38px;
     text-align: center;
     background: var(--panel);
@@ -138,6 +143,9 @@ body::after {
     border-radius: 32px;
     box-shadow: var(--shadow);
     backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    isolation: isolate;
+    overflow-x: clip;
     animation: aparecer 0.55s ease;
 }
 
@@ -168,6 +176,7 @@ body::after {
 .juego-superficie {
     position: relative;
     width: fit-content;
+    max-width: 100%;
     margin: 26px auto 0;
     padding: 18px;
     border-radius: 28px;
@@ -283,25 +292,26 @@ body::after {
 #tablero {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(4, 84px);
-    grid-template-rows: repeat(4, 84px);
-    gap: 8px;
+    grid-template-columns: repeat(4, var(--puzzle-piece-size));
+    grid-template-rows: repeat(4, var(--puzzle-piece-size));
+    gap: var(--puzzle-gap);
     justify-content: center;
     margin: 0 auto;
     padding: 14px;
     width: fit-content;
+    max-width: 100%;
     background: rgba(255, 255, 255, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.68);
-    border-radius: 24px;
+    border-radius: 16px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .pieza {
-    width: 84px;
-    height: 84px;
-    background-size: 336px 336px;
+    width: var(--puzzle-piece-size);
+    height: var(--puzzle-piece-size);
+    background-size: calc(var(--puzzle-piece-size) * 4) calc(var(--puzzle-piece-size) * 4);
     cursor: pointer;
-    border-radius: 16px;
+    border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.75);
     box-shadow: 0 8px 16px rgba(122, 49, 80, 0.12);
     transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
@@ -323,16 +333,30 @@ body::after {
 .wordle-tablero {
     position: relative;
     display: grid;
-    gap: 8px;
+    gap: var(--wordle-gap, 6px);
     margin-top: 0;
     justify-content: center;
+    width: 100%;
+}
+
+.wordle-superficie {
+    width: 100%;
+    margin: 26px auto 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
 
 .wordle-fila {
     display: grid;
-    gap: 8px;
+    gap: var(--wordle-gap, 6px);
     justify-content: center;
     margin-bottom: 0;
+    width: 100%;
 }
 
 .wordle-casilla {
@@ -342,7 +366,7 @@ body::after {
     align-items: center;
     justify-content: center;
     border: 2px solid rgba(155, 54, 94, 0.18);
-    border-radius: 18px;
+    border-radius: 12px;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 244, 246, 0.85));
     box-shadow:
@@ -366,20 +390,28 @@ body::after {
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 }
 
 .teclado-fila {
     display: flex;
     justify-content: center;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    width: min(100%, 640px);
+    max-width: 100%;
 }
 
 .tecla {
-    min-width: 46px;
+    min-width: 0;
+    flex: 1 1 0;
     padding: 12px 14px;
     border: 1px solid rgba(255, 255, 255, 0.72);
-    border-radius: 16px;
+    border-radius: 12px;
     background: linear-gradient(180deg, var(--key), #f7e8ec);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.7),
@@ -392,6 +424,10 @@ body::after {
     user-select: none;
     text-align: center;
     transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+}
+
+.tecla-accion {
+    flex: 1.45 1 0;
 }
 
 .tecla:hover {
@@ -413,11 +449,6 @@ body::after {
     transform: translateY(1px);
 }
 
-.tecla:first-child,
-.tecla:last-child {
-    min-width: 72px;
-}
-
 /* Animaciones */
 @keyframes aparecer {
     from {
@@ -432,14 +463,19 @@ body::after {
 
 /* Responsive */
 @media (max-width: 768px) {
-    body {
-        padding-top: 96px;
-    }
-
     .navbar {
-        top: 12px;
+        position: sticky;
+        top: 10px;
+        left: auto;
+        transform: none;
+        width: 100%;
+        margin: 0 auto 14px;
         padding: 12px 14px;
         border-radius: 20px;
+    }
+
+    body {
+        padding-top: 14px;
     }
 
     .nav-links {
@@ -453,6 +489,7 @@ body::after {
     }
 
     #contenido {
+        min-height: calc(100dvh - 120px);
         padding: 26px 16px 28px;
         border-radius: 26px;
     }
@@ -480,24 +517,18 @@ body::after {
     }
 
     #tablero {
-        grid-template-columns: repeat(4, 68px);
-        grid-template-rows: repeat(4, 68px);
-        gap: 6px;
+        --puzzle-piece-size: min(16vw, 68px);
+        --puzzle-gap: 6px;
         padding: 10px;
     }
 
     .pieza {
-        width: 68px;
-        height: 68px;
-        background-size: 272px 272px;
-        border-radius: 12px;
+        border-radius: 10px;
     }
 
     .wordle-casilla {
-        width: 54px;
-        height: 54px;
         font-size: 1.35rem;
-        border-radius: 14px;
+        border-radius: 10px;
     }
 
     .juego-superficie {
@@ -506,25 +537,20 @@ body::after {
     }
 
     .tecla {
-        min-width: 38px;
         padding: 10px 10px;
         font-size: 0.82rem;
-        border-radius: 13px;
-    }
-
-    .tecla:first-child,
-    .tecla:last-child {
-        min-width: 58px;
+        border-radius: 10px;
     }
 }
 
 @media (max-width: 480px) {
     body {
-        padding-inline: 10px;
+        padding-inline: 8px;
     }
 
     .navbar {
-        width: calc(100% - 16px);
+        width: 100%;
+        max-width: 100%;
         flex-direction: column;
         align-items: stretch;
     }
@@ -534,11 +560,8 @@ body::after {
     }
 
     .nav-links {
+        width: 100%;
         justify-content: center;
-    }
-
-    #contenido {
-        margin-top: 42px;
     }
 
     .corazon-particulas-card {
@@ -551,23 +574,36 @@ body::after {
         border-radius: 20px;
     }
 
+    .wordle-superficie {
+        padding: 0;
+    }
+
     #heart-particles {
         height: 280px;
     }
 
     .wordle-casilla {
-        width: 48px;
-        height: 48px;
         font-size: 1.2rem;
     }
 
     .teclado-fila {
-        gap: 6px;
+        gap: 4px;
     }
 
     .tecla {
-        min-width: 32px;
         padding: 9px 8px;
         font-size: 0.76rem;
+        border-radius: 9px;
+    }
+
+    #tablero {
+        --puzzle-piece-size: min(20vw, 58px);
+        --puzzle-gap: 5px;
+        padding: 8px;
+    }
+
+    #contenido {
+        min-height: calc(100dvh - 110px);
+        padding-inline: 12px;
     }
 }

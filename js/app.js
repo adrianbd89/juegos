@@ -1,60 +1,53 @@
-// Creamos la "app" global para acceder desde el HTML
 const app = {
     contenido: document.getElementById("contenido"),
     heartAnimation: new HomeHeartAnimation("heart-particles"),
     victoryAnimation: new VictoryParticles(),
+    iniciada: false,
+    viewManager: null,
+    router: null,
 
-    limpiarVistaAnterior() {
-        this.heartAnimation.stop();
-        this.victoryAnimation.stopAll();
+    crearRouter() {
+        this.viewManager = new ViewManager(this.contenido);
+        this.router = new AppRouter(this.viewManager, {
+            home: new HomeView(this.contenido, this.heartAnimation, this.victoryAnimation),
+            puzzle: new PuzzleView(this.contenido, this.victoryAnimation),
+            wordle: new WordleView(
+                () => new WordleScreen(
+                    this.contenido.id,
+                    (target, options) => this.victoryAnimation.play(target, options)
+                ),
+                this.heartAnimation,
+                this.victoryAnimation
+            )
+        });
     },
 
     mostrarInicio() {
-        this.limpiarVistaAnterior();
-
-        this.contenido.innerHTML = `
-            <section class="inicio-hero">
-                <div class="inicio-copy">
-                    <span class="inicio-etiqueta">Un rinconcito para ti</span>
-                    <h2>Bienvenida</h2>
-                    <p>He hecho esto para ti porque te quiero muchisimo.</p>
-                </div>
-                <div class="corazon-particulas-card">
-                    <canvas id="heart-particles" aria-label="Corazon de particulas animado"></canvas>
-                </div>
-            </section>
-        `;
-
-        this.heartAnimation.start();
+        this.router.goToHome();
     },
 
     mostrarPuzzle() {
-        this.limpiarVistaAnterior();
-
-        new Puzzle("contenido", [
-            "img/foto2.jpg",
-            "img/foto3.jpg",
-            "img/foto4.jpg",
-            "img/foto5.jpg",
-            "img/foto6.jpg",
-            "img/foto7.jpg"
-        ]);
+        this.router.goToPuzzle();
     },
 
     mostrarWordle() {
-        this.limpiarVistaAnterior();
-
-        if (!this.mainWordle) {
-            this.mainWordle = new MainWordle("contenido");
-        }
-
-        this.mainWordle.clear();
+        this.router.goToWordle();
     },
 
     reproducirVictoria(target, options) {
         this.victoryAnimation.play(target, options);
+    },
+
+    iniciar() {
+        if (this.iniciada || !this.contenido) return;
+
+        this.crearRouter();
+        this.iniciada = true;
+        this.mostrarInicio();
     }
 };
 
 window.app = app;
-window.onload = () => app.mostrarInicio();
+
+document.addEventListener("DOMContentLoaded", () => app.iniciar());
+window.addEventListener("pageshow", () => app.iniciar());
