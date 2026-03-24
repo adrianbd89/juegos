@@ -7,18 +7,20 @@ class WordleStatusView {
         this.setMessage("");
     }
 
-    showVictory() {
-        this.setMessage("Lo adivinaste 💖");
+    showVictory(definicion) {
+        const detalle = definicion ? ` <span class="mensaje-wordle-definicion">${definicion}</span>` : "";
+        this.setMessage(`Lo adivinaste &#x1F496;${detalle}`);
     }
 
-    showDefeat(palabraSecreta) {
-        this.setMessage(`La palabra era: ${palabraSecreta}`);
+    showDefeat(palabraSecreta, definicion) {
+        const detalle = definicion ? ` <span class="mensaje-wordle-definicion">${definicion}</span>` : "";
+        this.setMessage(`La palabra era: <strong>${palabraSecreta}</strong>.${detalle}`);
     }
 
     setMessage(message) {
         const element = document.getElementById(this.elementId);
         if (element) {
-            element.textContent = message;
+            element.innerHTML = message;
         }
     }
 }

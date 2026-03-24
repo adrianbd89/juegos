@@ -1,12 +1,14 @@
 class WordleController {
-    constructor(contenedor, game, statusView, onVictory) {
+    constructor(contenedor, game, statusView, onVictory, metadata = {}) {
         this.contenedor = contenedor;
         this.game = game;
         this.statusView = statusView;
         this.onVictory = onVictory;
+        this.metadata = metadata;
 
         this.inicializarJuego();
-        this.registrarListeners();
+        WordleController.instanciaActiva = this;
+        this.registrarListenersGlobales();
     }
 
     inicializarJuego() {
@@ -14,15 +16,23 @@ class WordleController {
         this.teclado = new TecladoView(this.contenedor);
     }
 
-    registrarListeners() {
-        if (!this.listenerRegistrado) {
-            document.addEventListener("keydown", (e) => this.teclear(e));
-            this.listenerRegistrado = true;
+    registrarListenersGlobales() {
+        if (!WordleController.listenerTecladoRegistrado) {
+            document.addEventListener("keydown", (e) => {
+                if (WordleController.instanciaActiva) {
+                    WordleController.instanciaActiva.teclear(e);
+                }
+            });
+            WordleController.listenerTecladoRegistrado = true;
         }
 
-        if (!this.listenerTeclasVisualesRegistrado) {
-            this.contenedor.addEventListener("teclaPresionada", (e) => this.teclear({ key: e.detail }));
-            this.listenerTeclasVisualesRegistrado = true;
+        if (!WordleController.listenerTeclasVisualesRegistrado) {
+            this.contenedor.addEventListener("teclaPresionada", (e) => {
+                if (WordleController.instanciaActiva) {
+                    WordleController.instanciaActiva.teclear({ key: e.detail });
+                }
+            });
+            WordleController.listenerTeclasVisualesRegistrado = true;
         }
     }
 
@@ -65,7 +75,7 @@ class WordleController {
         }
 
         if (resultado.terminado) {
-            this.statusView.showDefeat(resultado.palabraSecreta);
+            this.statusView.showDefeat(resultado.palabraSecreta, this.metadata.definicion);
         }
     }
 
@@ -76,10 +86,10 @@ class WordleController {
     }
 
     victoria() {
-        this.statusView.showVictory();
+        this.statusView.showVictory(this.metadata.definicion);
         if (this.onVictory) {
             this.onVictory("#wordle-tablero", {
-                colors: ["#6aaa64", "#c9b458", "#ff8fab", "#ffffff"],
+                colors: ["#6aaa64", "#c9b458", "#7ad7a6", "#ffffff"],
                 duration: 2000
             });
         }
@@ -102,3 +112,7 @@ class WordleController {
         this.tablero.actualizarFila(filaIndex, this.game.getFila(filaIndex));
     }
 }
+
+WordleController.instanciaActiva = null;
+WordleController.listenerTecladoRegistrado = false;
+WordleController.listenerTeclasVisualesRegistrado = false;

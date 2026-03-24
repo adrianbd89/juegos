@@ -46,6 +46,7 @@ class TableroView {
         for (let i = 0; i < letras.length; i++) {
             fila[i].textContent = letras[i];
             fila[i].style.background = "";
+            fila[i].style.color = "";
         }
     }
 
@@ -60,6 +61,8 @@ class TableroView {
             } else {
                 fila[i].style.background = "#787c7e";
             }
+
+            fila[i].style.color = "#ffffff";
         }
     }
 
@@ -69,6 +72,7 @@ class TableroView {
             Array.from(fila.children).forEach((casilla) => {
                 casilla.textContent = "";
                 casilla.style.background = "";
+                casilla.style.color = "";
             });
         });
     }

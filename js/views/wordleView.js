@@ -20,5 +20,8 @@ class WordleView {
     destroy() {
         this.heartAnimation.stop();
         this.victoryAnimation.stopAll();
+        if (this.wordle && typeof this.wordle.limpiarTema === "function") {
+            this.wordle.limpiarTema();
+        }
     }
 }

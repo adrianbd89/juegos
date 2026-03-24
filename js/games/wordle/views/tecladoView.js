@@ -55,7 +55,7 @@ class TecladoView {
             return tecla;
         }
 
-        return tecla === "ENTER" ? "→" : "←";
+        return tecla === "ENTER" ? "->" : "<-";
     }
 
     actualizarTecla(letra, nuevoEstado) {
